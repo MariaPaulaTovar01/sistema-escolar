@@ -2,63 +2,62 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Materia;
 use Illuminate\Http\Request;
 
 class MateriaController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    //Listar Materias
     public function index()
     {
-        //
+        $materias = Materia::all();
+        return view('materias.index', compact('materias'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
+    // Redireccion a formulario de creacion de materia.
     public function create()
     {
-        //
+        return view('materias.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+    //Guardar materia nueva
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'nombre' => 'required',
+            'codigo' => 'required|unique:materias',
+        ]);
+        Materia::create($request->all());
+        return redirect()->route('materias.index')->with('success', 'Materia creada correctamente');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    //Vista de edicion de materia 
+    public function edit($id)
     {
-        //
+        $materia = Materia::FindOrFail($id);
+        return view('materias.edit', compact('materia'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    //Editar materia 
+    public function update(Request $request, $id)
     {
-        //
+        $materia = Materia::FindOrFail($id);
+
+        $request->validate([
+            'nombre' => 'required',
+            'codigo' => 'required|unique:materias,codigo,' .$id,
+        ]);
+        $materia->update($request->all());
+        return redirect()->route('materias.index')->with('success', 'Materia actualizada correctamente');
+
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
+    //Eliminar materia
     public function destroy(string $id)
     {
-        //
+        $materia = Materia::FindOrFail($id);
+        $materia->delete();
+
+        return redirect()->route('materias.idex')->with('success', 'Materia eliminada exitosamente');
     }
 }

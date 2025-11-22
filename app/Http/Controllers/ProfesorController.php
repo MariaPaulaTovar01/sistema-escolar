@@ -15,14 +15,14 @@ class ProfesorController extends Controller
         return view('profesores.index', compact('profesores'));
     }
 
-    //Crear profesores
+    //Vista de formulario de creación de profesores
 
     public function create()
     {
         return view('profesores.create');
     }
 
-    //Guardar profesores 
+    //Guardar profesor nuevo
     
     public function store(Request $request)
     {
@@ -36,7 +36,7 @@ class ProfesorController extends Controller
         return redirect()->route('profesores.index')->with('success', 'Profesor registrado correctamente.');
     }
 
-    //Eliminar profesores
+    //Eliminar profesor
 
     public function destroy($id)
     {

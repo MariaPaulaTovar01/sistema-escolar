@@ -7,20 +7,20 @@ use Illuminate\Http\Request;
 
 class EstudianteController extends Controller
 {
-    // Mostrar lista
+    // Listar estudiantes
     public function index()
     {
         $estudiantes = Estudiante::all();
         return view('estudiantes.index', compact('estudiantes'));
     }
 
-    // Formulario de creación
+    // Vista de formulario de creación de estudiante
     public function create()
     {
         return view('estudiantes.create');
     }
 
-    // Guardar estudiante
+    // Guardar estudiante nuevo
     public function store(Request $request)
     {
         $request->validate([
