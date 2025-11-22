@@ -2,63 +2,43 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Asignacion;
+use App\Models\Estudiante;
+use App\Models\Profesor;
+use App\Models\Materia;
 use Illuminate\Http\Request;
 
 class AsignacionController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+
+    //Listar las asignaciones realizadas
     public function index()
     {
-        //
+        $asignaciones = Asignacion::with(['estudiante', 'profesor', 'materia'])->get();
+        return view('asignaciones.index', compact('asignaciones'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
+    //Vista de formulario de creación de asignación
     public function create()
     {
-        //
+        $estudiantes = Estudiante::all();
+        $profesores = Profesor::all();
+        $materias = Materia::all();
+
+        return view('asignaciones.create', compact('estudiantes', 'profesores', 'materias'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+    //Guardar nueva asignación
     public function store(Request $request)
     {
-        //
-    }
+        $request->validate([
+            'estudiante_id' => 'required',
+            'profesor_id' => 'required',
+            'materia_id' => 'required',
+        ]);
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
+        Asignacion::create($request->all());
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        return redirect()->route('asignaciones.index')->with('success', 'Asignación creada correctamente.');
     }
 }

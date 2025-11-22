@@ -58,6 +58,6 @@ class MateriaController extends Controller
         $materia = Materia::FindOrFail($id);
         $materia->delete();
 
-        return redirect()->route('materias.idex')->with('success', 'Materia eliminada exitosamente');
+        return redirect()->route('materias.index')->with('success', 'Materia eliminada exitosamente');
     }
 }
